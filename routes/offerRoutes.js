@@ -94,6 +94,25 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
   }
 });
 
+router.delete("/offer/:id", isAuthenticated, async (req, res) => {
+  try {
+    const id = req.params.id;
+    // find offer=
+    const offer = await Offer.findById(id);
+    const imageId = offer.product_image.public_id;
+    console.log(imageId);
+    // delete cloudinary image
+    await cloudinary.uploader.destroy(imageId);
+    // delete folder
+    await cloudinary.api.delete_folder(`vinted/offers/${id}/`);
+    // delete offer
+    await Offer.findByIdAndDelete(id);
+    res.status(200).json({ message: "offer succesfully deleted" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 router.get("/offer/:id", async (req, res) => {
   try {
     const offer = await Offer.findById(req.params.id).populate({
