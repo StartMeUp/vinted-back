@@ -39,6 +39,7 @@ router.get("/offers", async (req, res) => {
         if (!err) count = result.length;
       }
     )
+      .populate("owner")
       .limit(resultsPerPage)
       .skip((page - 1) * resultsPerPage)
       .sort({ product_price: sort });
