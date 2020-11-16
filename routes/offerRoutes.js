@@ -70,11 +70,11 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
       product_price: price,
       owner: req.user.id,
       product_details: [
-        { condition },
-        { city },
-        { brand },
-        { size },
-        { color },
+        { ÉTAT: condition },
+        { EMPLACEMENT: city },
+        { MARQUE: brand },
+        { TAILLE: size },
+        { COULEUR: color },
       ],
     });
     // upload picture
