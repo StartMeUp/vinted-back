@@ -30,6 +30,11 @@ router.get("/offers", async (req, res) => {
     const resultsPerPage = 20;
     let count = 0;
 
+    const allResults = await Offer.find({
+      product_price: { $gte: priceMin, $lte: priceMax },
+      product_name: new RegExp(title, "i"),
+    });
+
     const search = await Offer.find(
       {
         product_price: { $gte: priceMin, $lte: priceMax },
@@ -44,7 +49,7 @@ router.get("/offers", async (req, res) => {
       .skip((page - 1) * resultsPerPage)
       .sort({ product_price: sort });
 
-    res.json({ count, offers: search });
+    res.json({ count: allResults.length, offers: search });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
