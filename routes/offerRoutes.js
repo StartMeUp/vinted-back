@@ -44,6 +44,7 @@ router.get("/offers", async (req, res) => {
         if (!err) count = result.length;
       }
     )
+      .sort({ _id: -1 })
       .populate("owner")
       .limit(resultsPerPage)
       .skip((page - 1) * resultsPerPage)
@@ -75,11 +76,11 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
       product_price: price,
       owner: req.user.id,
       product_details: [
-        { ÉTAT: condition },
-        { EMPLACEMENT: city },
         { MARQUE: brand },
         { TAILLE: size },
+        { ÉTAT: condition },
         { COULEUR: color },
+        { EMPLACEMENT: city },
       ],
     });
     // upload picture
