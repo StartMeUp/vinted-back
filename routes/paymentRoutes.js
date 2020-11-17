@@ -4,14 +4,14 @@ const stripe = require("stripe")(process.env.STRIPE_TEST_SECRET_KEY);
 
 router.post("/payment", async (req, res) => {
   try {
+    console.log(req.fields);
     const stripeToken = req.fields.stripeToken;
 
     const response = await stripe.charges.create({
-      amount: req.fields.product_price,
+      amount: req.fields.product_price * 100,
       currency: "eur",
-      description: product_name,
+      description: req.fields.product_name,
       source: stripeToken,
-      customer: req.fields.username,
     });
 
     console.log(response.status);
